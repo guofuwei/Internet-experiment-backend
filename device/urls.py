@@ -7,4 +7,5 @@ urlpatterns = [
     path('delete', views.delete_device),
     path('speak', views.speak),
     path('get_location', views.get_location),
+    path('stop_speak', views.stop_speak),
 ]
