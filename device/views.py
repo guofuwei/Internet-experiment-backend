@@ -2,9 +2,17 @@ import json
 
 from django.http import JsonResponse
 from device.models import Device
+import random
 
 
 # Create your views here.
+
+
+def generate_random_latitude():
+    return random.uniform(-90, 90)
+
+def generate_random_longitude():
+    return random.uniform(-180, 180)
 def get_all(request):
     if request.method != "GET":
         return JsonResponse({"code": "400", "msg": "请求方法错误"})
@@ -87,8 +95,14 @@ def get_location(request):
     device_id = request.GET.get("id")
     if not device_id:
         return JsonResponse({"code": "400", "msg": "参数错误"})
+    latitude = generate_random_latitude()
+    longitude = generate_random_longitude()
+    # 更新经纬度
     device = Device.objects.get(id=device_id)
+    device.latitude = latitude
+    device.longitude = longitude
+    device.save()
     return JsonResponse({"code": 200, "msg": "success", "data": {
-        "longitude": device.longitude,
-        "latitude": device.latitude
+        "longitude": longitude,
+        "latitude": latitude
     }})
